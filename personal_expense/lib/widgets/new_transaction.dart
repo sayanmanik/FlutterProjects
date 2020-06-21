@@ -125,16 +125,12 @@ class NewTransaction extends StatefulWidget {
   NewTransaction(this.addTx);
 
   @override
-  State<StatefulWidget> createState() => _NewTransactionState(this.addTx);
+  State<StatefulWidget> createState() => _NewTransactionState();
 }
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
-
-  final Function addTx;
-
-  _NewTransactionState(this.addTx);
 
   void submitData() {
     final enteredTitle = titleController.text;
@@ -144,10 +140,12 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
-    addTx(
-      enteredTitle,
+    widget.addTx(
+    enteredTitle,
       enteredAmount,
     );
+
+    Navigator.of(context).pop();
   }
 
   @override
