@@ -1,58 +1,3 @@
-//import 'package:flutter/material.dart';
-//import 'package:intl/intl.dart';
-//import 'package:personal_expense/models/transaction.dart';
-//
-//class TransactionList extends StatelessWidget {
-//
-//  List<Transaction> transactions;
-//
-//  TransactionList(this.transactions);
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Container(
-//      height: 300,
-//      child: ListView(
-//          children: transactions.map((tx) => Card(
-//              elevation: 5,
-//              child: Row(
-//                children: [
-//                  Container(
-//                      margin:
-//                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-//                      decoration: BoxDecoration(
-//                        border: Border.all(color: Colors.purple, width: 2),
-//                      ),
-//                      padding: EdgeInsets.all(10),
-//                      child: Text(
-//                        '\$${tx.amt}', // STRING INTERPOLATION
-//                        style: TextStyle(color: Colors.purple, fontSize: 20),
-//                      )),
-//                  Column(
-//                    crossAxisAlignment: CrossAxisAlignment.start,
-//                    children: [
-//                      Container(
-//                          child: Text(
-//                        tx.title,
-//                        style: TextStyle(fontSize: 16, color: Colors.black),
-//                      )),
-//                      Container(
-//                          child: Text(
-//                        DateFormat().add_yMMMMd().format(tx.date),
-//                        style: TextStyle(color: Colors.grey),
-//                      ))
-//                    ],
-//                  )
-//                ],
-//              )
-//            )
-//          )
-//          .toList(),
-//      )
-//  );
-//  }
-//}
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -60,13 +5,14 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  Function deleteTx;
 
-  TransactionList(this.transactions);
+  TransactionList(this.transactions, this.deleteTx);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 500,
       child: ListView.builder(
         itemBuilder: (ctx, index) {
           return Card(
@@ -86,6 +32,13 @@ class TransactionList extends StatelessWidget {
                 ),
                 subtitle:
                     Text(DateFormat.yMMMMd().format(transactions[index].date)),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  color: Theme.of(context).errorColor,
+                  onPressed: () {
+                    deleteTx(transactions[index].id);
+                  },
+                ),
               ));
         },
         itemCount: transactions.length,

@@ -159,7 +159,7 @@ class MyApp extends StatelessWidget {
             textTheme: ThemeData.light().textTheme.copyWith(
                   title: TextStyle(
                     fontFamily: 'OpenSans',
-                    fontSize: 20,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold,
                   ),
                   button: TextStyle(
@@ -206,11 +206,11 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(String txTitle, double txAmount,DateTime time) {
     final newTx = Transaction(
       title: txTitle,
       amt: txAmount,
-      date: DateTime.now(),
+      date: time,
       id: DateTime.now().toString(),
     );
 
@@ -232,6 +232,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id){
+    setState(() {
+       _userTransactions.removeWhere((tx) => tx.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -249,6 +255,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _userTransactions.isEmpty
           ? Center(
               child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   "No data found",
@@ -259,7 +267,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 20,
                 ),
                 Container(
-                    height: 20,
+                    height: 80,
                     child: Image.asset(
                       'assets/images/waiting.png',
                       fit: BoxFit.cover,
@@ -271,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Chart(_recentTransactions),
-                TransactionList(_userTransactions)
+                TransactionList(_userTransactions,_deleteTransaction)
               ],
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
