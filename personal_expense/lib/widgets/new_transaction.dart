@@ -119,6 +119,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:personal_expense/widgets/adaptive_flat_button.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
@@ -142,11 +144,7 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
-    widget.addTx(
-      enteredTitle,
-      enteredAmount,
-      _dateTime
-    );
+    widget.addTx(enteredTitle, enteredAmount, _dateTime);
 
     Navigator.of(context).pop();
   }
@@ -169,7 +167,8 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(child:Card(
+    return SingleChildScrollView(
+        child: Card(
       elevation: 5,
       child: Container(
         padding: EdgeInsets.only(
@@ -202,17 +201,10 @@ class _NewTransactionState extends State<NewTransaction> {
                   Expanded(
                       child: Text(_dateTime == null
                           ? 'No Date'
-                          : 'Picked Date: ${DateFormat.yMMMMd().format(_dateTime)}'
-                          )
-                        ),
-                  FlatButton(
-                    textColor: Theme.of(context).primaryColor,
-                    child: Text(
-                      'Add Date',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: _presentDatePicker,
-                  ),
+                          : 'Picked Date: ${DateFormat.yMMMMd().format(_dateTime)}')),
+                  
+                  AdaptiveFlatButton('Add Date', _presentDatePicker)
+                  
                 ])),
             RaisedButton(
               child: Text('Add Transaction'),
@@ -223,7 +215,6 @@ class _NewTransactionState extends State<NewTransaction> {
           ],
         ),
       ),
-    )
-  );
+    ));
   }
 }

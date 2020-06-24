@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
 import './widgets/chart.dart';
 import './models/transaction.dart';
+import 'dart:io';
 
 void main() {
   // this feature only fixes the screen orientation to potrait mode
@@ -120,7 +122,22 @@ class _MyHomePageState extends State<MyHomePage> {
     bool isLandScape =
         MediaQuery.of(context).orientation == Orientation.landscape;
 
-    final appBar = AppBar(
+    final PreferredSize appBar = Platform.isIOS ? 
+      CupertinoNavigationBar(
+        middle: Text(
+          'Personal Expenses'
+          ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children:[
+            GestureDetector(
+              child: Icon(CupertinoIcons.add),
+              onTap: () => _startAddNewTransaction(context))
+          ]
+        ),
+
+      )
+     :AppBar(
       title: Text(
         'Personal Expenses',
       ),
@@ -140,9 +157,8 @@ class _MyHomePageState extends State<MyHomePage> {
       child: TransactionList(_userTransactions, _deleteTransaction),
     );
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+
+    final pageBody = SafeArea(child: SingleChildScrollView(
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -151,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Show Chart'),
+                  Text('Show Chart',style: Theme.of(context).textTheme.title,),
                   Switch(
                       value: _showChart,
                       onChanged: (val) {
@@ -169,26 +185,35 @@ class _MyHomePageState extends State<MyHomePage> {
                     0.3,
                 child: Chart(_recentTransactions),
               ),
-
-            if(!isLandScape) transactionWidget,
-
-            if(isLandScape) _showChart
-                ? Container(
-                    height: (MediaQuery.of(context).size.height -
-                            appBar.preferredSize.height -
-                            MediaQuery.of(context).padding.top) *
-                        0.7,
-                    child: Chart(_recentTransactions),
-                  )
-                : transactionWidget,
+            if (!isLandScape) transactionWidget,
+            if (isLandScape)
+              _showChart
+                  ? Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.7,
+                      child: Chart(_recentTransactions),
+                    )
+                  : transactionWidget,
           ],
         ),
-      ),
+      )
+    );
+
+    return Platform.isIOS ? CupertinoPageScaffold(
+      child: pageBody,
+
+    )   : Scaffold(
+      appBar: appBar,
+      body: pageBody,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => _startAddNewTransaction(context),
+            )
     );
   }
 }
