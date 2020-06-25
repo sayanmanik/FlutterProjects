@@ -1,95 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:personal_expense/widgets/transaction_item.dart';
 
 import '../models/transaction.dart';
+import './transaction_item.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-  Function deleteTx;
+  final Function deleteTx;
 
   TransactionList(this.transactions, this.deleteTx);
 
   @override
   Widget build(BuildContext context) {
+    print('build() TransactionList');
     return transactions.isEmpty
-        ? LayoutBuilder(builder: (ctx, constraints){
-          return Column(
-            children: <Widget>[
-              Text(
-                'No transactions added yet!',
-                style: Theme.of(context).textTheme.title,
-              ),
-              SizedBox(
-                height: constraints.maxHeight * 0.1,
-              ),
-              Container(
-                  height: constraints.maxHeight * 0.6,
-                  child: Image.asset(
-                    'assets/images/waiting.png',
-                    fit: BoxFit.cover,
-                  )),
-            ],
+        ? LayoutBuilder(builder: (ctx, constraints) {
+            return Column(
+              children: <Widget>[
+                Text(
+                  'No transactions added yet!',
+                  style: Theme.of(context).textTheme.title,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                    height: constraints.maxHeight * 0.6,
+                    child: Image.asset(
+                      'assets/images/waiting.png',
+                      fit: BoxFit.cover,
+                    )),
+              ],
+            );
+          })
+        : ListView(
+            children: transactions
+                .map((tx) => TransactionItem(
+                      key: ValueKey(tx.id),
+                      transaction: tx,
+                      deleteItem: deleteTx,
+                    ))
+                .toList(),
           );
-        })
-        
-         
-    : Container(
-      height: 500,
-      child: ListView.builder(
-        itemBuilder: (ctx, index) {
-          return TransactionItem(transactions[index], deleteTx);
-        },
-        itemCount: transactions.length,
-        // itemBuilder: (ctx, index) {
-        //   return Card(
-        //     child: Row(
-        //       children: <Widget>[
-        //         Container(
-        //           margin: EdgeInsets.symmetric(
-        //             vertical: 10,
-        //             horizontal: 15,
-        //           ),
-        //           decoration: BoxDecoration(
-        //             border: Border.all(
-        //               color: Theme.of(context).primaryColor,
-        //               width: 2,
-        //             ),
-        //           ),
-        //           padding: EdgeInsets.all(10),
-        //           child: Text(
-        //             '\$${transactions[index].amt.toStringAsFixed(2)}',
-        //             style: TextStyle(
-        //               fontWeight: FontWeight.bold,
-        //               fontSize: 20,
-        //               color: Theme.of(context).primaryColor,
-        //             ),
-        //           ),
-        //         ),
-        //         Column(
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: <Widget>[
-        //             Text(
-        //               transactions[index].title,
-        //               // style: TextStyle(
-        //               //   fontSize: 16,
-        //               //   fontWeight: FontWeight.bold,
-        //               // ),
-        //               style: Theme.of(context).textTheme.title,
-        //             ),
-        //             Text(
-        //               DateFormat.yMMMd().format(transactions[index].date),
-        //               style: TextStyle(
-        //                 color: Colors.grey,
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       ],
-        //     ),
-        //   );
-        // },
-      ),
-    );
   }
 }
