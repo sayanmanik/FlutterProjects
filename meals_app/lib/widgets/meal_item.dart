@@ -9,26 +9,31 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
+  final Function removeItem;
 
   MealItem(
-      {
-      @required this.id,
+      {@required this.id,
       @required this.title,
       @required this.imageUrl,
       @required this.duration,
       @required this.complexity,
-      @required this.affordability});
+      @required this.affordability,
+      @required this.removeItem});
 
   void selectMeal(BuildContext context) {
-
-    Navigator.of(context).pushNamed(
-      MealDetailsScreen.routeName,
-      arguments: id);
+    Navigator.of(context)
+        .pushNamed(MealDetailsScreen.routeName, arguments: id)
+        .then((result) {
+      if (result != null){
+         removeItem(result);
+      }
+       //print(result);
+      
+    });
   }
 
-
-  String get complexityText{
-    switch(complexity){
+  String get complexityText {
+    switch (complexity) {
       case Complexity.Simple:
         return 'Simple';
         break;
@@ -43,9 +48,8 @@ class MealItem extends StatelessWidget {
     }
   }
 
-
-  String get affordabilityText{
-    switch(affordability){
+  String get affordabilityText {
+    switch (affordability) {
       case Affordability.Affordable:
         return 'Affordable';
         break;
@@ -60,11 +64,10 @@ class MealItem extends StatelessWidget {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: ()=>selectMeal(context),
+        onTap: () => selectMeal(context),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
