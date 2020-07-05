@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "910927393396",
+    "firebase_url": "https://flutter-update-71767.firebaseio.com",
+    "project_id": "flutter-update-71767",
+    "storage_bucket": "flutter-update-71767.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:910927393396:android:59748ecc4250581d969721",
+        "android_client_info": {
+          "package_name": "com.example.shop_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "910927393396-599e2pu25hoid9prq9i6bv8ukjl74o65.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMNfCDewRFk6Rgm98c6DtnCMv31KHw8PQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "910927393396-599e2pu25hoid9prq9i6bv8ukjl74o65.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
