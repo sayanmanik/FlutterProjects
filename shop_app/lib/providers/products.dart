@@ -67,28 +67,26 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     const url = 'https://flutter-update-71767.firebaseio.com/products.json';
-    try{
+    try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProducts = [];
-      extractedData.forEach((prodId, prodData){
-          loadedProducts.add(Product(
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Product(
             id: prodId,
             title: prodData['title'],
             description: prodData['description'],
             price: prodData['price'],
             isFavorite: prodData['isFavorite'],
-            imageUrl: prodData['imageUrl'])  
-          );
+            imageUrl: prodData['imageUrl']));
       });
       _items = loadedProducts;
       notifyListeners();
-    }catch(error){
+    } catch (error) {
       print(error);
       throw error;
     }
   }
-
 
   Future<void> addProduct(Product product) async {
     const url = 'https://flutter-update-71767.firebaseio.com/products.json';
@@ -146,20 +144,34 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final productIndex = _items.indexWhere((prod) => prod.id == id);
     if (productIndex >= 0) {
-       final url = 'https://flutter-update-71767.firebaseio.com/products/$id.json';
-      await http.patch(url,body: json.encode({
-          'title': newProduct.title,
-          'description': newProduct.description,
-          'imageUrl': newProduct.imageUrl,
-          'price': newProduct.price
-      }));
+      final url =
+          'https://flutter-update-71767.firebaseio.com/products/$id.json';
+      await http.patch(url,
+          body: json.encode({
+            'title': newProduct.title,
+            'description': newProduct.description,
+            'imageUrl': newProduct.imageUrl,
+            'price': newProduct.price
+          }));
       _items[productIndex] = newProduct;
       notifyListeners();
     } else {}
   }
 
   void deleteProduct(String id) {
+    // final url = 'https://flutter-update-71767.firebaseio.com/products/$id.json';
+    // http.delete(url);
+    // _items.removeWhere((prod) => prod.id == id);
+    // notifyListeners();
+
+    final url = 'https://flutter-update-71767.firebaseio.com/products/$id.json';
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    final existingProduct = _items[existingProductIndex];
     _items.removeWhere((prod) => prod.id == id);
+
+    http.delete(url).catchError((_) {
+      _items.insert(existingProductIndex, existingProduct);
+    });
     notifyListeners();
   }
 }
