@@ -5,6 +5,7 @@ import './product.dart';
 import 'dart:convert';
 
 class Products with ChangeNotifier {
+  String _token;
   List<Product> _items = [
     // Product(
     //   id: 'p1',
@@ -41,6 +42,7 @@ class Products with ChangeNotifier {
   ];
   // var _showFavoritesOnly = false;
 
+  Products(this._token,this._items);
   List<Product> get items {
     // if (_showFavoritesOnly) {
     //   return _items.where((prodItem) => prodItem.isFavorite).toList();
@@ -57,7 +59,7 @@ class Products with ChangeNotifier {
   }
  
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://flutter-update-71767.firebaseio.com/products.json';
+    final url = 'https://flutter-update-71767.firebaseio.com/products.json?auth=$_token';
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -80,7 +82,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = 'https://flutter-update-71767.firebaseio.com/products.json';
+    final url = 'https://flutter-update-71767.firebaseio.com/products.json';
 
     try {
       final response = await http.post(url,
@@ -163,7 +165,6 @@ class Products with ChangeNotifier {
          notifyListeners();
         throw HttpException('Couldn\'t delete product');
       }
-      existingProduct = null;
-  
+      existingProduct = null;  
   }
 }
