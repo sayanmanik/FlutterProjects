@@ -2,6 +2,16 @@
 
 A new Flutter project.
 
+
+<img src="images/Screenshot_20200722-011956.jpg" width = "300">
+  LogIn Screen
+
+<img src="images/Screenshot_20200722-011954.jpg" width="300">
+  SignIn Screen
+
+<img src="images/Screenshot_20200722-011406.jpg" width="300">
+  Message Screen
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
