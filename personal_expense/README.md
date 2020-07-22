@@ -1,6 +1,7 @@
 # personal_expense
 
 A new Flutter project.
+<img src = "images/Screenshot_20200722-102319.jpg" width="300">
 
 ## Getting Started
 
