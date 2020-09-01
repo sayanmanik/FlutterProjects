@@ -1,3 +1,2 @@
 # FlutterProjects
-
-### This is my Flutter course file
+This is my Flutter course file
